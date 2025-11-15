@@ -1,0 +1,250 @@
+// ===================================
+// THEME SYSTEM - CSS VARIABLES
+// ===================================
+
+// TEMA 1: Dark Elegant (default)
+[data-theme="dark"] {
+  //add bookmark style
+  --background-add-bookmark: linear-gradient(
+                  190deg,
+                  rgba(30, 41, 59, 1) 0%,
+                  rgba(15, 23, 42, 1) 50%,
+                  rgba(2, 6, 23, 1) 100%
+  );
+  --color-label-add-bookmark: #CBD5E1;
+  --input-background-add-bookmark: #2A3246;
+  --input-outline-add-bookmark: #c7c7c7;
+  --button-cancel-add-bookmark: #475569;
+  --heading-color-add-bookmark: white;
+  //theme switcher dropdown
+  --border-color-switcher: rgba(255, 255, 255, 0.1);
+
+  //mobile-search
+  --input-search-pannel: white;
+  --input-icon: black;
+  --input-search-border: black;
+  --input-placeholder-color: black;
+
+  //addbookmark btn
+  --button-addbookmark: #2A3243;
+
+  //input colors
+  --input-border: white;
+
+  //input desktop
+  --input-placeholder: white;
+  --input-icons: white;
+  --input-text: white;
+
+  //dropdown colors
+  --dropdown-border: rgba(255, 255, 255, 0.03);
+  --dropdown-color: white;
+  --dropdown-hover: #2d3344;
+  --dropdown-background: linear-gradient(174deg,rgba(23, 35, 59, 1) 0%, rgba(20, 29, 47, 1) 100%);
+  --dropdown-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  --dropdown-svg: white;
+  --dropdown-svg-hover: #60a5fa;
+  --dropdown-main-border: rgba(255, 255, 255, 0.24);
+
+  // Background colors
+  --bg-primary: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+  --bg-card: rgba(30, 41, 59, 0.4);
+  --bg-input: rgba(255, 255, 255, 0.08);
+  --bg-input-hover: rgba(255, 255, 255, 0.3);
+  --bg-input-focus: rgba(255, 255, 255, 0.12);
+  --hover-bg-card: #273144;
+
+  // Border colors
+  --border-card: rgba(71, 85, 105, 0.8);
+  --border-input: rgba(255, 255, 255, 0.4);
+  --border-focus: rgba(0, 122, 255, 0.2);
+
+  // Text colors
+  --text-primary: #f8fafc;
+  --text-secondary: #ffffff;
+  --text-tertiary: #94a3b8;
+  --text-placeholder: rgba(255, 255, 255, 0.4);
+  --settings-text: white;
+
+  // Gradient orbs
+  --orb-1-colors: linear-gradient(45deg, #6366f1, #8b5cf6);
+  --orb-2-colors: linear-gradient(45deg, #ec4899, #f59e0b);
+  --orb-3-colors: linear-gradient(45deg, #06b6d4, #3b82f6);
+
+  // Grid colors
+  --grid-color: rgba(99, 102, 241, 0.3);
+  --grid-opacity: 0.4;
+
+  // Buttons
+  --btn-primary-bg: linear-gradient(135deg, #3b82f6, #2563eb);
+  --btn-primary-shadow: rgba(99, 102, 241, 0.3);
+  --btn-secondary-bg: rgba(71, 85, 105, 0.2);
+  --btn-secondary-border: rgba(100, 116, 139, 0.4);
+
+  // Accent colors
+  --accent-primary: white;
+  --accent-success: #10b981;
+  --accent-success-shadow: rgba(16, 185, 129, 0.3);
+}
+
+// TEMA 2: Light Minimalist
+[data-theme="light"] {
+  //add bookmark style
+  --background-add-bookmark: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  --color-label-add-bookmark: black;
+  --input-background-add-bookmark: #515151;
+  --input-outline-add-bookmark: #c7c7c7;
+  --button-cancel-add-bookmark: #515151;
+  --heading-color-add-bookmark: black;
+
+  //theme switcher dropdown
+  --border-color-switcher: rgba(0, 0, 0, 0.1);
+
+  --bg-icons: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9)),
+  url('../assets/backgroundicons.png');
+
+  //mobile-search
+  --input-search-pannel: #2b2b2b;
+  --input-icon: white;
+  --input-search-border: white;
+  --input-placeholder-color: white;
+
+  //addbookmark btn
+  --button-addbookmark: #334155bd;
+
+  --input-border: black;
+
+  //input desktop
+  --input-placeholder: black;
+  --input-icons: black;
+  --input-text: black;
+
+  --dropdown-border: rgba(0,0,0,.1);
+  --dropdown-color: black;
+  --dropdown-hover: #e4e9f2;
+  --dropdown-background: white;
+  --dropdown-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  --dropdown-svg: black;
+  --dropdown-svg-hover: black;
+
+  // Background colors
+  --bg-primary: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-input: rgba(241, 245, 249, 0.8);
+  --bg-input-hover: rgba(226, 232, 240, 0.9);
+  --bg-input-focus: rgba(255, 255, 255, 1);
+  --hover-bg-card: #f5f7fa;
+
+  // Border colors
+  --border-card: rgba(203, 213, 225, 0.5);
+  --border-input: rgba(203, 213, 225, 0.6);
+  --border-focus: rgba(99, 102, 241, 0.3);
+
+  // Text colors
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  --text-placeholder: rgba(100, 116, 139, 0.5);
+  --settings-text: black;
+
+  // Gradient orbs
+  --orb-1-colors: linear-gradient(45deg, #ddd6fe, #e0e7ff);
+  --orb-2-colors: linear-gradient(45deg, #fce7f3, #fed7aa);
+  --orb-3-colors: linear-gradient(45deg, #cffafe, #dbeafe);
+
+  // Grid colors
+  --grid-color: rgba(148, 163, 184, 0.2);
+  --grid-opacity: 0.3;
+
+  // Buttons
+  --btn-primary-bg: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --btn-primary-shadow: rgba(99, 102, 241, 0.3);
+  --btn-secondary-bg: rgba(241, 245, 249, 0.8);
+  --btn-secondary-border: rgba(203, 213, 225, 0.6);
+
+  // Accent colors
+  --accent-primary: #0f172a;
+  --accent-success: #10b981;
+  --accent-success-shadow: rgba(16, 185, 129, 0.3);
+}
+
+// TEMA 3: Midnight Blue
+[data-theme="midnight"] {
+  --background-add-bookmark: linear-gradient(135deg, #0c4a6e 0%, #082f49 50%, #0a1929 100%);
+  --color-label-add-bookmark: #CBD5E1;
+  --input-background-add-bookmark: #ffffff3b;
+  --input-outline-add-bookmark: #c7c7c7;
+  --button-cancel-add-bookmark: #475569;
+  --heading-color-add-bookmark: white;
+
+  //theme switcher dropdown
+  --border-color-switcher: rgba(255, 255, 255, 0.1);
+
+  //mobile-search
+  --input-search-pannel: white;
+  --input-icon: black;
+  --input-search-border: black;
+  --input-placeholder-color: black;
+
+  //addbookmark btn
+  --button-addbookmark: #0a4060;
+
+  --dropdown-border: rgba(14, 165, 233, .1);
+  --dropdown-color: white;
+  --dropdown-hover: #0d4e73;
+  --dropdown-background: #0d4266;
+  --dropdown-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --dropdown-svg: white;
+  --dropdown-svg-hover: #39bef8;
+
+
+  // Background colors
+  --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #082f49 50%, #0a1929 100%);
+  --bg-card: rgba(12, 74, 110, 0.3);
+  --bg-input: rgba(14, 165, 233, 0.08);
+  --bg-input-hover: rgba(14, 165, 233, 0.12);
+  --bg-input-focus: rgba(14, 165, 233, 0.15);
+  --hover-bg-card: #0b4f74;
+
+  // Border colors
+  --border-card: rgba(14, 165, 233, 0.3);
+  --border-input: rgba(56, 189, 248, 0.3);
+  --border-focus: rgba(14, 165, 233, 0.4);
+
+  // Text colors
+  --text-primary: #e0f2fe;
+  --text-secondary: #bae6fd;
+  --text-tertiary: #7dd3fc;
+  --text-placeholder: rgba(186, 230, 253, 0.4);
+
+  // Gradient orbs
+  --orb-1-colors: linear-gradient(45deg, #0ea5e9, #06b6d4);
+  --orb-2-colors: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  --orb-3-colors: linear-gradient(45deg, #06b6d4, #6366f1);
+
+  // Grid colors
+  --grid-color: rgba(14, 165, 233, 0.25);
+  --grid-opacity: 0.35;
+
+  // Buttons
+  --btn-primary-bg: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --btn-primary-shadow: rgba(14, 165, 233, 0.4);
+  --btn-secondary-bg: rgba(12, 74, 110, 0.4);
+  --btn-secondary-border: rgba(56, 189, 248, 0.4);
+
+  // Accent colors
+  --accent-primary: #38bdf8;
+  --accent-success: #06b6d4;
+  --accent-success-shadow: rgba(6, 182, 212, 0.4);
+
+}
+
+// Default theme
+:root {
+  @extend [data-theme="dark"];
+}
+
+// Helper pentru a accesa variabilele în SCSS
+@function theme-var($var-name) {
+  @return var(--#{$var-name});
+}
