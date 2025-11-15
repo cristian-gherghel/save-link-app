@@ -1,12 +1,82 @@
-# Vue 3 + Vite
+A modern, feature-rich bookmark manager built with Vue 3 and Vite. SaveLink helps you organize, search, and manage your bookmarks with a beautiful, responsive interface.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## ✨ Features
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+- 🎨 **Dark/Light Theme** - Toggle between themes for comfortable viewing
+- 🔍 **Smart Search** - Quickly find bookmarks with real-time search
+- 🔤 **Alphabetical Sorting** - Organize bookmarks alphabetically
+- ➕ **Easy Add/Edit** - Simple form interface to manage bookmarks
+- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
+- 🎭 **Smooth Animations** - Powered by GSAP for fluid transitions
+- 🔐 **User Authentication** - Secure login system
 
-DATA Logic approach
+## 🚀 Tech Stack
 
-- I will keep all in one page - App
-- I will create components for Search, Alphabet, Add form, Bookmark card
-- I will write the localstorage logic in app
-- I will create fn to write/read localstorage
+- **Vue 3** - Progressive JavaScript framework
+- **Vite** - Next-generation frontend tooling
+- **Vuex** - State management
+- **Vue Router** - Client-side routing
+- **GSAP** - Animation library
+- **SortableJS** - Drag-and-drop functionality
+- **PrimeUI** - UI component theming
+- **Axios** - HTTP client
+- **Sass** - CSS preprocessor
+
+## 📦 Installation
+
+  ```bash
+  # Clone the repository
+  git clone <repository-url>
+
+  # Navigate to project directory
+  cd linker-fe
+
+  # Install dependencies
+  npm install
+
+  🛠️ Development
+
+  # Start development server
+  npm run dev
+
+  The application will be available at http://localhost:5173
+
+  🏗️ Build
+
+  # Build for production
+  npm run build
+
+  # Preview production build
+  npm run preview
+
+  🧪 Testing
+
+  # Run Cypress tests
+  npx cypress open
+
+  📁 Project Structure
+
+  src/
+  ├── components/      # Reusable Vue components
+  │   ├── AddBookmarkForm.vue
+  │   ├── AlphabetSorting.vue
+  │   ├── BookmarkCard.vue
+  │   ├── SearchBar.vue
+  │   └── ThemeSwitcher.vue
+  ├── views/          # Page components
+  │   ├── HomeView.vue
+  │   └── LoginView.vue
+  ├── App.vue         # Root component
+  └── main.js         # Application entry point
+
+  🤝 Contributing
+
+  Contributions are welcome! Please feel free to submit a Pull Request.
+
+  📄 License
+
+  This project is private and proprietary.
+
+  ---
+  Built with ❤️ using Vue 3 + Vite
+  ```
