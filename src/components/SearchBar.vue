@@ -49,8 +49,6 @@ function handleOpenSettings () {
   emit('open-settings')
 }
 
-console.log('Theme primit:', theme);
-
 </script>
 
 <style lang="scss">

@@ -5,42 +5,48 @@
         <div>
           <h1>Welcome to SaveLink App</h1>
           <h2>Your personal bookmark organizer</h2>
-          <h3>Log in to your account</h3>
         </div>
-        <form @submit.prevent="handleLogin">
-          <label for="email">
-            Email
-            <input
+
+        <p class="text-center"
+           v-if="login_email_sent">
+          Please check your email for a link to login,
+          and download our
+          <a class="underline"
+             target="_blank"
+            href="https://chromewebstore.google.com/detail/savelink-app-extension/ebacofedninglhlapjlfkkdihpgpbadk">
+            Save link chrome extension</a>
+          to save bookmarks to your device.
+        </p>
+
+        <div v-else>
+          <h3 class="text-center">
+            Login or register by entering your email address.
+          </h3>
+
+          <form @submit.prevent="handleLogin">
+            <label for="email">
+              Email
+              <input
                 autocomplete="email"
                 v-model="credentials.username"
                 type="email"
                 id="email"
                 placeholder="Enter your email"
                 required
-            >
-          </label>
-          <label for="password">
-            Password
-            <input
-                autocomplete="current-password"
-                v-model="credentials.password"
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                required
-            >
-          </label>
+              >
+            </label>
 
-          <button type="submit"
-                  :disabled="loading || !credentials.username || !credentials.password">
-            {{ loading ? 'Signing in...' : 'Access your bookmarks' }}
-          </button>
+            <button type="submit"
+                    :disabled="loading || !credentials.username">
+              Login / Register
+            </button>
 
-          <div v-if="error"
-               class="error-message">
-            {{ error }}
-          </div>
-        </form>
+            <div v-if="error"
+                 class="error-message">
+              {{ error }}
+            </div>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -54,19 +60,20 @@
   import Footer from "../components/Footer.vue";
   import {icons} from "../utils.js";
 
-  const store = useStore();
+  const { state, dispatch, commit } = useStore();
 
   const credentials = ref({
     username: '',
     password: ''
   });
 
-  const loading = computed(() => store.state.loading);
-  const error = computed(() => store.state.error);
+  const loading = computed(() => state.loading);
+  const error = computed(() => state.error);
+  const login_email_sent = computed(() => state.login_email_sent);
 
   function handleLogin () {
-    store.commit('CLEAR_ERROR');
-    store.dispatch('login', credentials.value);
+    commit('CLEAR_ERROR');
+    dispatch('login', credentials.value);
   }
 </script>
 
@@ -85,6 +92,13 @@
         max-width: 400px;
         width: 100%;
         margin-bottom: 200px;
+        p {
+          font-size: 1.8rem;
+          line-height: 3.7rem;
+          a {
+            text-decoration: underline;
+          }
+        }
         .form-section {
           > div {
             text-align: center;
@@ -107,14 +121,6 @@
               color: #f1f5f9;
             }
 
-            h3 {
-              margin: 0 0 8px 0;
-              padding: 0;
-              font-size: 1.6rem;
-              font-weight: 600;
-              color: #e2e8f0;
-            }
-
             p {
               margin: 0;
               padding: 0;
@@ -132,6 +138,14 @@
                 }
               }
             }
+          }
+
+          h3 {
+            margin-bottom: 24px;
+            padding: 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #e2e8f0;
           }
 
           form {

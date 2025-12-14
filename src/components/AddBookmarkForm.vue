@@ -42,39 +42,37 @@
 </template>
 
 <script setup>
-import {computed, reactive} from "vue";
-import {useStore} from "vuex";
-import {cloneObject} from "../utils.js";
+  import {computed, reactive} from "vue";
+  import {useStore} from "vuex";
+  import {cloneObject} from "../utils.js";
 
-const { state, commit, getters } = useStore();
-const emit = defineEmits(['submit', 'close'])
-const data = reactive({name: '', url: ''})
-const bookmark = computed(() => state.bookmark)
+  const { state, commit, getters } = useStore();
+  const emit = defineEmits(['submit', 'close'])
+  const bookmark = computed(() => state.bookmark)
 
-function handleClear () {
-  commit('SET_BOOKMARK', { name: '', url: '' });
-}
+  function handleClear () {
+    commit('SET_BOOKMARK', { name: '', url: '' });
+  }
 
-function handleInput (ev) {
-  commit('SET_BOOKMARK_FIELD', {
-    name: ev.target.id,
-    value: ev.target.value,
-  })
-}
+  function handleInput (ev) {
+    commit('SET_BOOKMARK_FIELD', {
+      name: ev.target.id,
+      value: ev.target.value,
+    })
+  }
 
-function handleCancel () {
-  emit('close')
-  handleClear()
-}
+  function handleCancel () {
+    emit('close')
+    handleClear();
+  }
 
-function handleSubmit () {
-  emit('submit', cloneObject(bookmark.value))
-  handleClear()
-}
+  function handleSubmit () {
+    emit('submit', cloneObject(bookmark.value))
+    handleClear();
+  }
 
-const isAddBookmarkForm = computed(() => getters.isAddBookmarkForm);
-const currentTheme = computed(() => getters.currentTheme)
-console.log(currentTheme)
+  const isAddBookmarkForm = computed(() => getters.isAddBookmarkForm);
+  const currentTheme = computed(() => getters.currentTheme);
 </script>
 
 

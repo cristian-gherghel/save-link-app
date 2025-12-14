@@ -6,6 +6,7 @@ import router from "../router/index.js";
 
 export default createStore ({
   state: {
+    login_email_sent: false,
     bookmarks: [],
     showAbout: false,
     bookmark: {},
@@ -146,10 +147,6 @@ export default createStore ({
       const bookmark = state.bookmarks.find(b => b.id === id);
       if (bookmark) bookmark.fav = !bookmark.fav;
     },
-    INCREMENT_BOOKMARK_COUNT (state, id) {
-      const bookmark = state.bookmarks.find(b => b.id === id);
-      if (bookmark) bookmark.count += 1;
-    },
     OPEN_ADD_FORM (state, value) {
       state.isAddBookmarkForm = value;
       document.body.style.overflow = 'hidden';
@@ -234,12 +231,14 @@ export default createStore ({
     // Modified login action - return success/failure instead of navigating
     async login ({commit}, credentials) {
       try {
-        commit('SET_LOADING', true)
-        const {data: user} = await axios.post(`/api/login`, credentials)
-        commit('SET_USER', user)
-        commit('SET_LOADING', false)
-        await router.push('/');
-      } catch (error) {
+        commit('SET_LOADING', true);
+        const { data: user } = await axios.post(`/api/login-by-email`, credentials);
+        commit('SET_USER', user);
+        commit('SET_LOADING', false);
+        commit('SET_STATE', { key: 'login_email_sent', value: true });
+        // await router.push('/');
+      }
+      catch (error) {
         commit('SET_LOADING', false)
         let errorMessage = 'Login failed. Please try again.';
         if (error.response) {
@@ -285,7 +284,6 @@ export default createStore ({
         throw err; // Throw error to be caught by router guard
       }
     },
-
     async migrate_data ({ commit, dispatch }, { from, to }) {
       try {
         commit('SET_LOADING', true);
@@ -321,7 +319,6 @@ export default createStore ({
         throw error;
       }
     },
-
     async migrate ({ commit }) {
       try {
         commit('SET_STATE', {key: 'isMigrating', value: true});
