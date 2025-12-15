@@ -7,20 +7,31 @@
           <h2>Your personal bookmark organizer</h2>
         </div>
 
-        <p class="text-center"
+        <div class="text-center"
            v-if="login_email_sent">
-          Please check your email for a link to login,
-          and download our
-          <a class="underline"
-             target="_blank"
-            href="https://chromewebstore.google.com/detail/savelink-app-extension/ebacofedninglhlapjlfkkdihpgpbadk">
-            Save link chrome extension</a>
-          to save bookmarks to your device.
-        </p>
+          <h4>Email Sent</h4>
+          <h5>Please check your inbox for your sign in link.</h5>
+
+          <p class="spam">
+            Sometimes this can land in <b>SPAM</b>!
+            While we hope that isn't the case if it doesn't arrive in 
+            a minute or three, please check <b>SPAM</b> folder too.
+          </p>
+
+          <p>
+            <img src="../assets/chrome-extension-icon.png" alt="chrome extension icon">
+            Download our
+            <a class="underline"
+               target="_blank"
+               href="https://chromewebstore.google.com/detail/savelink-app-extension/ebacofedninglhlapjlfkkdihpgpbadk">
+              Save link chrome extension</a> <br>
+            to save bookmarks to your device.
+          </p>
+        </div>
 
         <div v-else>
           <h3 class="text-center">
-            Login or register by entering your email address.
+            Sign in or create a free account
           </h3>
 
           <form @submit.prevent="handleLogin">
@@ -38,7 +49,7 @@
 
             <button type="submit"
                     :disabled="loading || !credentials.username">
-              Login / Register
+              Email a login link
             </button>
 
             <div v-if="error"
@@ -89,14 +100,61 @@
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%);
 
       .login-container {
-        max-width: 400px;
+        max-width: 600px;
         width: 100%;
         margin-bottom: 200px;
+        h3 {
+          margin-bottom: 24px;
+          padding: 0;
+          font-size: 2.8rem;
+          font-weight: 600;
+          color: #e2e8f0;
+        }
+
+        h4 {
+          margin-bottom: 12px;
+          font-size: 2.6rem;
+        }
+
+        h5 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 500;
+        }
+
+        .p {
+          margin: 0;
+          padding: 0;
+          font-size: 1.3rem;
+          color: #cbd5e1;
+
+          a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+
+            &:hover {
+              color: #93c5fd;
+              text-decoration: underline;
+            }
+          }
+        }
+
         p {
           font-size: 1.8rem;
+          font-weight: 400;
           line-height: 3.7rem;
+          img {
+            width: 120px;
+            margin: 0 auto 24px;
+            display: block;
+          }
           a {
             text-decoration: underline;
+          }
+          &.spam {
+            font-size: 1.6rem;
+            line-height: 2.7rem;
           }
         }
         .form-section {
@@ -107,8 +165,8 @@
             h1 {
               margin: 0;
               padding: 0;
-              font-size: 2.8rem;
-              font-weight: 600;
+              font-size: 2.6rem;
+              font-weight: 500;
               letter-spacing: -0.5px;
               color: #f1f5f9;
             }
@@ -120,34 +178,7 @@
               letter-spacing: -0.5px;
               color: #f1f5f9;
             }
-
-            p {
-              margin: 0;
-              padding: 0;
-              font-size: 1.3rem;
-              color: #cbd5e1;
-
-              a {
-                color: #60a5fa;
-                text-decoration: none;
-                font-weight: 500;
-
-                &:hover {
-                  color: #93c5fd;
-                  text-decoration: underline;
-                }
-              }
-            }
           }
-
-          h3 {
-            margin-bottom: 24px;
-            padding: 0;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #e2e8f0;
-          }
-
           form {
             display: flex;
             flex-direction: column;
