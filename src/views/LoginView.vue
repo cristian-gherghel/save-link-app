@@ -159,8 +159,9 @@
         }
         .form-section {
           > div {
+            max-width: 400px;
+            margin: 0 auto 32px;
             text-align: center;
-            margin-bottom: 32px;
 
             h1 {
               margin: 0;
