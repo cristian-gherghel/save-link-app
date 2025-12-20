@@ -229,14 +229,36 @@ export default createStore ({
       }
     },
     // Modified login action - return success/failure instead of navigating
-    async login ({commit}, credentials) {
+    async login_by_email ({commit}, credentials) {
       try {
         commit('SET_LOADING', true);
         const { data: user } = await axios.post(`/api/login-by-email`, credentials);
         commit('SET_USER', user);
         commit('SET_LOADING', false);
         commit('SET_STATE', { key: 'login_email_sent', value: true });
-        // await router.push('/');
+      }
+      catch (error) {
+        commit('SET_LOADING', false)
+        let errorMessage = 'Login failed. Please try again.';
+        if (error.response) {
+          if (error.response.status === 401) {
+            errorMessage = 'Invalid username or password';
+          }
+        } else if (error.request) {
+          errorMessage = 'Network error. Please check your connection';
+        }
+        commit('SET_ERROR', errorMessage);
+        return { success: false, error: errorMessage }; // Return error instead of navigating
+      }
+    },
+    async login ({commit}, credentials) {
+      try {
+        commit('SET_LOADING', true);
+        const { data: user } = await axios.post(`/api/login`, credentials);
+        commit('SET_USER', user);
+        commit('SET_LOADING', false);
+        commit('SET_STATE', { key: 'login_email_sent', value: true });
+        await router.push('/');
       }
       catch (error) {
         commit('SET_LOADING', false)

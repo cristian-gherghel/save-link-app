@@ -84,7 +84,7 @@
 
   function handleLogin () {
     commit('CLEAR_ERROR');
-    dispatch('login', credentials.value);
+    dispatch('login_by_email', credentials.value);
   }
 </script>
 

@@ -1,13 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
 import store from "../store/index.js";
 import HomeView from "../views/HomeView.vue";
+import LoginView from '../views/LoginView.vue'
+import Login_Password_View from '../views/Login_Password.vue'
 
 const routes = [
   {
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/login-password',
+    name: 'login_password',
+    component: Login_Password_View
   },
   {
     path: '/',
