@@ -13,7 +13,7 @@ export default createStore ({
     showOnlyFavorites: JSON.parse(localStorage.getItem('SHOW_ONLY_FAVORITES')) || false,
     search: '',
     sort: '',
-    user: null,
+    user: {},
     isAuthenticated: false,
     error: null,
     loading: false,
@@ -275,19 +275,15 @@ export default createStore ({
       }
     },
     // Modified logout action - return success/failure instead of navigating
-    async logout ({commit}) {
+    async logout ({ commit }) {
       try {
         await axios.delete('/api/logout');
-        localStorage.removeItem('AuthSession');
-        localStorage.removeItem('user');
         localStorage.removeItem('SHOW_ONLY_FAVORITES');
-
-        commit('SET_USER', null);
-        await router.push('/login');
-        return { success: true };
+        commit('SET_USER', {});
         commit("SET_UI_STATE", { key: "showSettings", value: false });
-        // Return success instead of navigating
-      } catch (error) {
+        return await router.push('/login');
+      }
+      catch (error) {
         console.error('Logout error:', error);
         return { success: false, error: error.message };
       }
@@ -306,54 +302,44 @@ export default createStore ({
         throw err; // Throw error to be caught by router guard
       }
     },
-    async migrate_data ({ commit, dispatch }, { from, to }) {
+    async export_user_data ({ commit }) {
       try {
-        commit('SET_LOADING', true);
-        console.log(`Migrating data from ${from} to ${to}`);
+        const { data } = await axios.get("/api/export-user-data");
 
-        let sourceData = [];
+        // 1. Convert response to formatted JSON
+        const json = JSON.stringify(data, null, 2);
 
-        if (from === 'local-couch') {
-          sourceData = await getAllData();
-        } else if (from === 'remote') {
-          const response = await axios.get('/api/bookmarks');
-          sourceData = response.data;
-        }
+        // 2. Create a Blob
+        const blob = new Blob([json], { type: "application/json" });
 
-        if (sourceData.length > 0) {
-          if (to === 'local-couch') {
-            for (const bookmark of sourceData) {
-              await saveData(bookmark.id, bookmark);
-            }
-          } else if (to === 'remote') {
-            for (const bookmark of sourceData) {
-              await axios.post('/api/bookmark', bookmark);
-            }
-          }
-        }
-        commit('SET_STATE', {key: 'dataSource', value: to});
-        await dispatch('get_marks');
-        commit('SET_LOADING', false);
-        return true;
-      } catch (error) {
-        commit('SET_LOADING', false);
-        console.error('Migration error:', error);
-        throw error;
+        // 3. Create a temporary download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        // 4. File name (safe + readable)
+        const timestamp = new Date().toISOString().split("T")[0];
+        a.href = url;
+        a.download = `savelink-data-${timestamp}.json`;
+
+        // 5. Trigger download
+        document.body.appendChild(a);
+        a.click();
+
+        // 6. Cleanup
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+      } catch (err) {
+        console.error("Export failed:", err);
       }
     },
-    async migrate ({ commit }) {
+    async delete_user_account ({ commit }) {
       try {
-        commit('SET_STATE', {key: 'isMigrating', value: true});
-        const sourceData = await getAllData();
-        console.log({sourceData})
-
-        for (const bookmark of sourceData) {
-          await axios.post('/api/bookmark', bookmark);
-        }
-        commit('SET_STATE', {key: 'isMigrating', value: false});
-      } catch (err) {
-        console.error("Migration failed:", err);
-
+        await axios.delete(`/api/delete-user-account`);
+        return { ok: true };
+      }
+      catch (err) {
+        console.log(err)
       }
     }
   },

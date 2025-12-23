@@ -44,10 +44,6 @@ export function useBreakpoints () {
   }
 }
 
-export function writeLS (name, value) {
-  return localStorage.setItem(name, JSON.stringify(value))
-}
-
 export function cloneObject (object = {}) {
   return JSON.parse(JSON.stringify(object));
 }

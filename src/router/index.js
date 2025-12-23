@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from "../store/index.js";
 import HomeView from "../views/HomeView.vue";
 import LoginView from '../views/LoginView.vue'
-import Login_Password_View from '../views/Login_Password.vue'
+import Login_Password_View from '../views/Login_Password.vue';
+import About from "../views/About.vue";
 
 const routes = [
   {
@@ -25,6 +26,16 @@ const routes = [
       next();
     }
   },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not_found',
+    redirect: '/about'
+  }
 ]
 
 const router = createRouter({
