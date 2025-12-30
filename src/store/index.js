@@ -353,13 +353,13 @@ export default createStore ({
 
       if (state.search) {
         results = state.feed.filter(o =>
-          o.name?.toLowerCase().includes(state.search?.toLowerCase())
+          o.title?.toLowerCase().includes(state.search?.toLowerCase())
         );
       }
 
       if (state.sort) {
         results = state.feed.filter(o =>
-          o.name?.toLowerCase().startsWith(state.sort?.toLowerCase())
+          o.title?.toLowerCase().startsWith(state.sort?.toLowerCase())
         );
       }
 

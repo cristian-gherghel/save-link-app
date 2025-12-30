@@ -62,10 +62,10 @@
     </section>
 
     <section class="cards-section"
-             :class="{'flex flex-center': !bookmarks.length,
-              'has-cards': bookmarks.length}">
+             :class="{'flex flex-center': !bookmarks.length || !feed.length,
+              'has-cards': bookmarks.length || feed.length}">
       <article
-          v-if="!loadingBookmarks && !bookmarks.length && searchQuery"
+          v-if="!loadingBookmarks && !feed.length && !bookmarks.length && searchQuery"
           class="empty-search-result"
       >
         <h3>No bookmark found with the name "{{ searchQuery }}"</h3>
@@ -74,7 +74,7 @@
 
       <article
           class="empty-bookmarks-section"
-          v-else-if="!bookmarks.length && !searchQuery"
+          v-else-if="!bookmarks.length && !feed.length && !searchQuery"
       >
         <h3 class="text-center empty-state-title">
           {{ favorite ? "You don't have any bookmarks in your favorites." : "You don't have any bookmarks yet" }}
