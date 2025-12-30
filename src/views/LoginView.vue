@@ -7,7 +7,7 @@
           <h2>Your personal bookmark organizer</h2>
         </div>
 
-        <div class="text-center"
+        <div class="post-message text-center"
            v-if="login_email_sent">
           <h4>Email Sent</h4>
           <h5>Please check your inbox for your sign in link.</h5>
@@ -122,24 +122,6 @@
           font-weight: 500;
         }
 
-        .p {
-          margin: 0;
-          padding: 0;
-          font-size: 1.3rem;
-          color: #cbd5e1;
-
-          a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 500;
-
-            &:hover {
-              color: #93c5fd;
-              text-decoration: underline;
-            }
-          }
-        }
-
         p {
           font-size: 1.8rem;
           font-weight: 400;
@@ -153,7 +135,8 @@
             text-decoration: underline;
           }
           &.spam {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            font-weight: 400;
             line-height: 2.7rem;
           }
         }

@@ -9,8 +9,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3022',
-        // target: 'https://savelink.app/api',
+        // target: 'http://localhost:3022',
+        target: 'https://savelink.app/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
