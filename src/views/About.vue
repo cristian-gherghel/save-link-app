@@ -10,7 +10,7 @@
       </div>
     </header>
 
-    <section class="block">
+    <section class="block-wrapper">
       <p class="lead">
         I built Savelink because I wanted a noise-free space for the internet — a place that feels fast, clean, and
         pleasant to use. After years of trying spreadsheets, browser folders, “read later” apps, and heavy bookmark
@@ -28,7 +28,7 @@
       </ul>
     </section>
 
-    <section class="block">
+    <section class="block-wrapper">
       <h3>How it works</h3>
       <p>
         Install the Chrome extension first — it enables the new-tab experience and lets you save links instantly from
@@ -49,7 +49,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block-wrapper">
       <h3>Creating an account</h3>
       <p>
         There’s no sign-up form. Just enter your email on the login page and you’ll receive a magic link.
@@ -57,7 +57,7 @@
       </p>
     </section>
 
-    <section class="block">
+    <section class="block-wrapper">
       <h3>Open project</h3>
       <p>
         Savelink is an open project. The source code is public and available for anyone
@@ -82,7 +82,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block-wrapper">
       <h3>About me</h3>
 
       <p>
@@ -123,7 +123,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block-wrapper">
       <h3>Privacy</h3>
       <p>
         Your bookmarks are yours. Savelink is built to respect privacy and attention: no data selling, no hidden
@@ -131,7 +131,7 @@
       </p>
     </section>
 
-    <section class="block danger"
+    <section class="block-wrapper danger"
              v-if="user.name">
       <h3>Export or delete your account</h3>
       <p>
@@ -253,7 +253,7 @@
     }
   }
 
-  .block {
+  .block-wrapper {
     margin-top: 34px;
     padding-top: 26px;
     border-top: 1px solid var(--border-card);

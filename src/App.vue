@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app-wrapper">
     <router-view/>
   </div>
 </template>
@@ -8,6 +8,15 @@
 
 </script>
 
-<style>
-
+<style lang="scss">
+  html,
+  body,
+  #app,
+  .app-wrapper,
+  .home {
+    min-height: 100%;
+  }
+  html {
+    height: 100%;
+  }
 </style>

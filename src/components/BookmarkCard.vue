@@ -221,7 +221,7 @@
       background: var(--bg-card);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       border: 1px solid var(--border-card);
-      border-radius: 16px;
+      border-radius: 8px;
       transition: background-color 0.1s ease-in-out, transform 0.1s ease-in-out;
 
       &.is-open {
@@ -231,7 +231,6 @@
 
       &:hover {
         background-color: var(--hover-bg-card);
-        transform: scale(1.05);
       }
 
       .card-link,
@@ -396,12 +395,13 @@
       }
     }
 
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 1025px) {
       .copy-icon {
         transform: translate(14px, 4px);
         opacity: 0.5;
         &:hover {
           opacity: 1;
+          transform: scale(1.05);
         }
         &:active {
           transform: scale(1.1) translate(14px, 4px);

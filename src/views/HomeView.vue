@@ -1,37 +1,69 @@
 <template>
   <main class="home">
-    <button @click="closeAboutBookmarkPanel"
-            class="access-about-card">
-      ?
-    </button>
-
     <AboutBookmark
-        v-if="showAboutBookmark"
-        @click="closeAboutBookmarkPanel" />
+      v-if="showAboutBookmark"
+      @click="closeAboutBookmarkPanel" />
 
-    <section
-        :class="{ disable: isAddBookmarkForm,'is-scrolled': isScrolled }"
-        class="search-section">
-      <div
-          class="search-container"
-      >
-        <SearchBar
-            :theme="currentTheme"
-            :scrollProgres="scrollProgress"
-            @open-settings="handleOpenSettings"
-            @click="handleShowForm"/>
-        <button @click="handleShowForm" class="addbookmark-btn">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white"/>
-          </svg>
-          <span>Add Bookmark</span>
-        </button>
+    <section class="main-header w100 search--section"
+             :class="{ disable: isAddBookmarkForm,'is-scrolled': isScrolled }">
+      <div class="flex flex-between">
+        <div class="left-side-wrapper">
+          <button class="access-about-card"
+                  @click="closeAboutBookmarkPanel">
+            ?
+          </button>
+        </div>
+
+        <div class="search--bar flex align-center flex-between">
+          <label for="search"
+                 class="block flex-auto relative">
+            <i class="search-icon"
+               v-html="icons.search" />
+            <input type="text"
+                   id="search"
+                   :value="search"
+                   @input="Handle_Search"
+                   placeholder="search bookmarks" />
+            <i class="close-icon"
+               v-show="search"
+               v-html="icons.closeIcon"
+               @click="Handle_Clear_Search" />
+          </label>
+        </div>
+
+        <div class="flex align-center">
+          <View_Tabs />
+
+          <i class="settings-icon block"
+             :class="{ 'rotate-icon': showSettings }"
+             v-html="icons.settingsIcon"
+             @click="Handle_Open_Settings" />
+        </div>
       </div>
+
+<!--      <div class="search-container">-->
+<!--        <SearchBar :theme="currentTheme"-->
+<!--                   :scrollProgres="scrollProgress"-->
+<!--                   @open-settings="Handle_Open_Settings"-->
+<!--                   @click="Handle_Show_New_Bookmark_Form" />-->
+
+<!--        <button @click="Handle_Show_New_Bookmark_Form"-->
+<!--                class="addbookmark-btn">-->
+<!--          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--            <path d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white"/>-->
+<!--          </svg>-->
+<!--          <span>Add Bookmark</span>-->
+<!--        </button>-->
+<!--      </div>-->
+
       <AlphabetSorting/>
-      <div class="scroll-loader" :style="{ width: scrollProgress + '%' }"></div>
+
+      <div class="scroll-loader" :style="{ width: scrollProgress + '%' }" />
     </section>
 
-    <section class="cards-section">
+    <section class="cards-section"
+             :class="{'flex flex-center': !bookmarks.length,
+              'has-cards': bookmarks.length}">
       <article
           v-if="!loadingBookmarks && !bookmarks.length && searchQuery"
           class="empty-search-result"
@@ -50,19 +82,22 @@
 
         <template v-if="!favorite">
           <p>Start adding your favorite bookmarks!</p>
-          <button @click="handleShowForm">Add your first bookmark</button>
+          <button @click="Handle_Show_New_Bookmark_Form">Add your first bookmark</button>
         </template>
       </article>
 
-      <ul v-if="loadingBookmarks" class="card__image">
-        <li v-for="n in 3" :key="n" class="skeleton-item">
+      <ul v-if="loadingBookmarks"
+          class="card__image">
+        <li v-for="n in 3"
+            :key="n"
+            class="skeleton-item">
           <Skeletor />
         </li>
       </ul>
 
       <ul class="card-container"
           :class="{ 'few-items': bookmarks.length <= 2 }"
-          v-else-if="bookmarks.length">
+          v-show="active_view === 'bookmarks' && bookmarks.length">
         <BookmarkCard
             v-for="(bookmark, index) in bookmarks"
             :key="bookmark.id || index"
@@ -77,20 +112,31 @@
             @edit="handleBookmarkEdit"
         />
       </ul>
+
+      <Feed_List v-show="active_view === 'feed' && feed.length" />
     </section>
 
-    <ThemeSwitcher/>
+    <footer class="main-footer fixed bottom0 w100 flex flex-between">
+      <View_Tabs />
+
+      <i class="add-bookmark-btn flex-center m-left-auto"
+         v-if="active_view !== 'feed'"
+         @click="Handle_Show_New_Bookmark_Form"
+         v-html="icons.plus" />
+    </footer>
+
+    <ThemeSwitcher />
 
     <AddBookmarkForm
         @submit="handeSubmitForm"
         @close="handleCancelForm"
         cy="bookmark-form" />
+
     <img
         v-if="currentTheme !== 'light'"
         class="background-texture"
         :src="currentTheme === 'dark' ? backgroundDark : backgroundLight"
         alt="blur-orb">
-
   </main>
 </template>
 
@@ -105,30 +151,47 @@
   import { useStore } from 'vuex';
   import store from "../store/index.js";
   import AddBookmarkForm from "../components/AddBookmarkForm.vue";
+  import Feed_List from "../components/Feed_List.vue";
+  import View_Tabs from "../components/View_Tabs.vue";
 
-  const { getters, dispatch, commit } = useStore();
-  const { width } = useBreakpoints()
+  const { state, getters, dispatch, commit } = useStore();
+  dispatch('get_feed');
+  const { width } = useBreakpoints();
 
   const openMenuId = ref(null);
   const isScrolled = ref(false);
   const scrollProgress = ref(0);
 
-  const bookmarks = computed(() => {
-    return getters.bookmarks;
-  });
+  const bookmarks = computed(() => getters.bookmarks);
+  const feed = computed(() => getters.feed);
+  const showSettings = computed(() => state.showSettings);
+  const active_view = computed(() => state.active_view);
+  const search = computed(() => state.search);
 
   const favorite = computed(() => store.state.showOnlyFavorites)
   const showAboutBookmark = computed(() => store.state.showAbout)
   const isAddBookmarkForm = computed(() => getters.isAddBookmarkForm);
   const currentTheme = computed(() => getters.currentTheme);
   const searchQuery = computed(() => getters.search || "");
-  const loadingBookmarks = computed(() => getters.loadingBookMarks)
+  const loadingBookmarks = computed(() => getters.loadingBookMarks);
+
+  function Handle_Search (ev) {
+    commit('SET_SEARCH', ev.target.value);
+  }
+
+  function Handle_Clear_Search (ev) {
+    commit('SET_SEARCH', '');
+    const input_tag = ev.currentTarget.parentElement.parentElement.querySelector('input');
+    setTimeout(() => {
+      input_tag.blur();
+    }, 0);
+  }
 
   function toggleMenu (id) {
     openMenuId.value = openMenuId.value === id ? null : id;
   }
 
-  function handleOpenSettings () {
+  function Handle_Open_Settings () {
     commit('TOGGLE_UI_STATE', 'showSettings');
   }
 
@@ -175,7 +238,8 @@
     isScrolled.value = scrollTop > 50;
     scrollProgress.value = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
   }
-  function handleShowForm () {
+  
+  function Handle_Show_New_Bookmark_Form () {
     commit("OPEN_ADD_FORM",true);
     commit("SET_UI_STATE", { key: "showSettings", value: false });
   }
@@ -203,14 +267,98 @@
 <style lang="scss">
   .home {
     @media only screen and (min-width: 0) {
+      width: 100%;
+
       background: var(--bg-icons), var(--bg-primary);
       background-repeat: repeat, repeat;
       background-position: center, center;
       background-size: auto, cover;
       background-attachment: fixed, fixed;
 
-      min-height: 100vh;
-      width: 100%;
+      .search-section {
+        background: var(--bg-primary);
+      }
+
+      .main-header {
+        top: 0;
+        left: 0;
+        position: fixed;
+        z-index: 999;
+        padding: 12px 16px;
+        background: var(--bg-primary);
+
+        .search--bar {
+          width: 100%;
+          max-width: 575px;
+          label {
+            margin-right: 24px;
+            i {
+              display: block;
+              padding: 4px;
+              position: absolute;
+            }
+          }
+          .search-icon {
+            left: 0;
+            top: 4px;
+            opacity: 0.7;
+            path {
+              fill: var(--text-primary);
+            }
+          }
+          .close-icon {
+            right: 0;
+            top: 11px;
+          }
+          input {
+            width: 100%;
+            padding: 7px 0 9px 36px;
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 1.8rem;
+            border-bottom: 1px solid #acacac;
+            border-radius: 0;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        .settings-icon {
+          transform: translateY(1px);
+          svg {
+            transition: transform 0.4s ease;
+            transform-origin: center;
+            path {
+              fill: var(--text-primary);
+            }
+          }
+          &.rotate-icon svg {
+            transform: rotate(90deg);
+          }
+        }
+
+        .alphabet-sorting {
+          margin-top: 16px;
+        }
+
+        .view-tabs {
+          display: none;
+        }
+      }
+
+      .main-footer {
+        z-index: 999;
+        padding: 8px 12px 8px 0;
+        .add-bookmark-btn {
+          transform: scale(0.9);
+          transform-origin: right;
+          padding: 8px;
+          background-color: #dddddd;
+          border-radius: 50%;
+        }
+      }
 
       .background-texture {
         position: fixed;
@@ -218,27 +366,31 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        pointer-events: none;
       }
 
       .access-about-card {
         display: none;
       }
+
       .search-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px 0 20px 0;
+        padding: 10px 0 16px 0;
         .addbookmark-btn {
           display: none;
         }
       }
+
       .cards-section {
-        padding-bottom: 20px;
-        padding-top: 40px;
+        min-height: 100%;
+        &.has-cards {
+          padding-top: 80px;
+          padding-bottom: 220px;
+        }
 
         .empty-search-result {
-          margin-top: 10vh;
-          margin-bottom: 20vh;
           overflow-y: hidden;
           padding: 20px;
           text-align: center;
@@ -263,7 +415,6 @@
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          margin-top: 15vh;
           padding: 20px;
 
           h3 {
@@ -310,7 +461,7 @@
           justify-content: center;
           flex-wrap: wrap;
           gap: 20px;
-          margin-top: 0px;
+          margin-top: 0;
           span {
             width: 278px;
             height: 89px;
@@ -321,6 +472,7 @@
         }
 
         .card-container {
+          width: 100%;
           display: flex;
           flex-wrap: wrap;
           gap: 20px;
@@ -331,53 +483,39 @@
         }
       }
     }
-    @media only screen and (min-width: 1000px) {
-      .access-about-card {
-        left: 34px;
-        top: 34px;
-        position: fixed;
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: var(--input-border);
-        background: transparent;
-        border: 1px solid var(--input-border);
-        border-radius: 100%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        z-index: 9999999;
-        transition: scale 0.1s ease-in;
-        &:hover {
-          scale: 1.1;
-        }
-      }
-      .cards-section {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding-top: 0px;
 
-        .card__image {
-          justify-content: start;
-          margin-top: 50px;
-          span {
-            height: 171px;
-          }
+    @media only screen and (min-width: 1024px) {
+      .main-header {
+        .settings-icon {
+          transform: translateY(2px);
+          margin-left: 16px;
+          cursor: pointer;
         }
-        .card-container {
-          padding: 50px 0px;
-          gap: 29px;
-          justify-content: center;
-          &.few-items {
-            justify-content: start;
+        .view-tabs {
+          display: flex;
+        }
+      }
+
+      .main-footer {
+        padding: 24px;
+        .view-tabs {
+          display: none;
+        }
+        .add-bookmark-btn {
+          cursor: pointer;
+          padding: 12px;
+          &:hover {
+            svg {
+              transform: scale(1.2);
+              transform-origin: center;
+            }
           }
         }
       }
+
       .search-section {
         position: sticky;
-        top: 0px;
+        top: 0;
         padding: 5px 0 20px 0;
         z-index: 50;
         &::before {
@@ -409,6 +547,56 @@
             font-size: 1.6rem;
             border: 1px solid #64748B;
             background-color: var(--button-addbookmark);
+          }
+        }
+      }
+
+      .left-side-wrapper {
+        width: 132px; // same width as the right side div
+      }
+      .access-about-card {
+        width: 30px;
+        height: 30px;
+        left: 34px;
+        top: 34px;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--input-border);
+        background: transparent;
+        border: 1px solid var(--input-border);
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        z-index: 9999999;
+        transition: scale 0.1s ease-in;
+        &:hover {
+          scale: 1.1;
+        }
+      }
+
+      .cards-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 0;
+        &.has-cards {
+          padding-top: 140px;
+        }
+
+        .card__image {
+          justify-content: start;
+          margin-top: 50px;
+          span {
+            height: 171px;
+          }
+        }
+        .card-container {
+          //padding: 50px 0;
+          gap: 29px;
+          justify-content: center;
+          &.few-items {
+            justify-content: start;
           }
         }
       }

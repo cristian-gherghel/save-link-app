@@ -8,6 +8,8 @@ export default createStore ({
   state: {
     login_email_sent: false,
     bookmarks: [],
+    feed: [],
+    active_view: 'bookmarks',
     showAbout: false,
     bookmark: {},
     showOnlyFavorites: JSON.parse(localStorage.getItem('SHOW_ONLY_FAVORITES')) || false,
@@ -43,45 +45,6 @@ export default createStore ({
         description: "Deep midnight theme",
       },
     ],
-  },
-  getters: {
-    showAbout: (state) => state.showAbout,
-    loadingBookMarks: state => state.loading,
-    isAuthenticated: state => state.isAuthenticated,
-    currentUser: state => state.user,
-    authError: state => state.error,
-    dataSource: state => state.dataSource,
-    isMigrating: state => state.isMigrating,
-    search: state => state.search,
-    bookmarks: state => {
-      let results = state.bookmarks.slice();
-
-      if (state.search) {
-        results = state.bookmarks.filter(o =>
-          o.name?.toLowerCase().includes(state.search?.toLowerCase())
-        );
-      }
-
-      if (state.sort) {
-        results = state.bookmarks.filter(o =>
-          o.name?.toLowerCase().startsWith(state.sort?.toLowerCase())
-        );
-      }
-
-      if (state.showOnlyFavorites) {
-        results = results.filter(o => o.fav);
-      }
-
-      results = results.sort((a, b) => b.count - a.count);
-      return arrangeFavorites(results);
-    },
-    showOnlyFavorites: (state) => state.showOnlyFavorites,
-    sort: (state) => state.sort,
-    showSettings: (state) => state.showSettings,
-    isAddBookmarkForm: (state) => state.isAddBookmarkForm,
-    isInactiveAddBookmarkCard: (state) => state.isInactiveAddBookmarkCard,
-    currentTheme: (state) => state.theme,
-    availableThemes: (state) => state.themes,
   },
   mutations: {
     SET_STATE (state, {key, value}) {
@@ -179,6 +142,17 @@ export default createStore ({
         console.log(err)
       } finally {
         commit('SET_LOADING', false)
+      }
+    },
+    async get_feed ({commit, state}) {
+      try {
+        commit('SET_LOADING', true);
+        const { data } = await axios.get('/api/feed');
+        commit('SET_STATE', { key: 'feed', value: data });
+        commit('SET_LOADING', false);
+      }
+      catch (err) {
+        commit('SET_LOADING', false);
       }
     },
     async add_bookmark ({commit, state}, payload) {
@@ -343,9 +317,64 @@ export default createStore ({
       }
     }
   },
-  modules: {
+  getters: {
+    showAbout: (state) => state.showAbout,
+    loadingBookMarks: state => state.loading,
+    isAuthenticated: state => state.isAuthenticated,
+    currentUser: state => state.user,
+    authError: state => state.error,
+    dataSource: state => state.dataSource,
+    isMigrating: state => state.isMigrating,
+    search: state => state.search,
+    bookmarks: state => {
+      let results = state.bookmarks.slice();
 
-  }
+      if (state.search) {
+        results = state.bookmarks.filter(o =>
+          o.name?.toLowerCase().includes(state.search?.toLowerCase())
+        );
+      }
+
+      if (state.sort) {
+        results = state.bookmarks.filter(o =>
+          o.name?.toLowerCase().startsWith(state.sort?.toLowerCase())
+        );
+      }
+
+      if (state.showOnlyFavorites) {
+        results = results.filter(o => o.fav);
+      }
+
+      results = results.sort((a, b) => b.count - a.count);
+      return arrangeFavorites(results);
+    },
+    feed: state => {
+      let results = state.feed.slice();
+
+      if (state.search) {
+        results = state.feed.filter(o =>
+          o.name?.toLowerCase().includes(state.search?.toLowerCase())
+        );
+      }
+
+      if (state.sort) {
+        results = state.feed.filter(o =>
+          o.name?.toLowerCase().startsWith(state.sort?.toLowerCase())
+        );
+      }
+
+      // results = results.sort((a, b) => b.count - a.count);
+      return results;
+    },
+    showOnlyFavorites: (state) => state.showOnlyFavorites,
+    sort: (state) => state.sort,
+    showSettings: (state) => state.showSettings,
+    isAddBookmarkForm: (state) => state.isAddBookmarkForm,
+    isInactiveAddBookmarkCard: (state) => state.isInactiveAddBookmarkCard,
+    currentTheme: (state) => state.theme,
+    availableThemes: (state) => state.themes,
+  },
+  modules: {}
 })
 
 document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
