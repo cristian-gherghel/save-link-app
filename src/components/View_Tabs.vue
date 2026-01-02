@@ -1,7 +1,7 @@
 <template>
   <div class="view-tabs flex align-center">
     <i class="bookmark-icon"
-       :class="{'opa-4': route.name !== 'private-bookmarks'}"
+       :class="{'opa-4': route.name !== 'Private_Bookmarks'}"
        @click="Toggle_View('/private-bookmarks')"
        v-html="icons.bookmark" />
     <i class="feed-icon"
