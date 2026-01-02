@@ -27,7 +27,7 @@ const routes = [
     meta: { auth: true },
     component: HomeView,
     beforeEnter: async (to, from, next) => {
-      await store.dispatch('get_feed');
+      store.state.bookmarks.length === 0 && await store.dispatch('get_feed');
       next();
     }
   },
@@ -36,7 +36,7 @@ const routes = [
     name: 'Public_Feed',
     component: FeedView,
     beforeEnter: async (to, from, next) => {
-      await store.dispatch('get_feed');
+      store.state.feed.length === 0 && await store.dispatch('get_feed');
       next();
     }
   },

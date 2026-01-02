@@ -144,7 +144,7 @@
   const { state, getters, dispatch, commit } = useStore();
   // dispatch('get_feed');
   const bookmarks = computed(() => getters.bookmarks);
-  bookmarks.value.length === 0 && dispatch('get_marks');
+  // bookmarks.value.length === 0 && dispatch('get_marks');
   const { width } = useBreakpoints();
 
   const openMenuId = ref(null);

@@ -125,7 +125,7 @@
 
   const { state, getters, dispatch, commit } = useStore();
   const feed = computed(() => getters.feed);
-  feed.value.length === 0 && dispatch('get_feed');
+  // feed.value.length === 0 && dispatch('get_feed');
   const { width } = useBreakpoints();
 
   const openMenuId = ref(null);
