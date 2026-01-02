@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/public-feed',
+    redirect: '/private-bookmarks',
   },
   {
     path: '/private-bookmarks',
