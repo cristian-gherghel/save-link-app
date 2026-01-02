@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from "../store/index.js";
 import HomeView from "../views/HomeView.vue";
+import FeedView from "../views/Feed_View.vue";
 import LoginView from '../views/LoginView.vue'
 import Login_Password_View from '../views/Login_Password.vue';
 import About from "../views/About.vue";
@@ -18,13 +19,22 @@ const routes = [
   },
   {
     path: '/',
-    name: 'home',
-    meta: {auth: true},
-    component: HomeView,
-    beforeEnter: async (to, from, next) => {
-      await store.dispatch('get_marks');
-      next();
-    }
+    redirect: '/public-feed',
+  },
+  {
+    path: '/private-bookmarks',
+    name: 'Private_Bookmarks',
+    meta: { auth: true },
+    component: HomeView
+  },
+  {
+    path: '/public-feed',
+    name: 'Public_Feed',
+    component: FeedView,
+    // beforeEnter: async (to, from, next) => {
+    //   await store.dispatch('get_feed');
+    //   next();
+    // }
   },
   {
     path: '/about',
@@ -50,8 +60,8 @@ router.beforeEach(async function (to, from, next) {
 
   if (to.meta?.auth && !store.state.user?.name) {
     try {
-      const ok = await store.dispatch('get_user');
-      if (ok) {
+      const is_user = await store.dispatch('get_user');
+      if (is_user) {
         next();
       } else {
         next('/login');

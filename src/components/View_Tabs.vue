@@ -1,12 +1,12 @@
 <template>
   <div class="view-tabs flex align-center">
     <i class="bookmark-icon"
-       :class="{'opa-4': active_view !== 'bookmarks'}"
-       @click="Toggle_View('bookmarks')"
+       :class="{'opa-4': route.name !== 'bookmarks'}"
+       @click="Toggle_View('/private-bookmarks')"
        v-html="icons.bookmark" />
     <i class="feed-icon"
-       :class="{'opa-4': active_view !== 'feed'}"
-       @click="Toggle_View('feed')"
+       :class="{'opa-4': route.name !== 'Public_Feed'}"
+       @click="Toggle_View('/public-feed')"
        v-html="icons.feed" />
   </div>
 </template>
@@ -15,12 +15,16 @@
   import {useStore} from "vuex";
   import {computed} from "vue";
   import {icons} from "../utils.js";
+  import {useRoute} from "vue-router";
+  import router from "../router/index.js";
 
-  const { state, dispatch, commit } = useStore();
-  const active_view = computed(() => state.active_view);
+  const { state, commit } = useStore();
+  const route = useRoute();
+  // const active_view = computed(() => state.active_view);
 
-  function Toggle_View (value) {
-    commit('SET_STATE', { key: 'active_view', value });
+  function Toggle_View (route) {
+    router.push(route);
+    // commit('SET_STATE', { key: 'active_view', value });
   }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <main class="home">
+  <main class="feed-view">
     <AboutBookmark
       v-if="showAboutBookmark"
       @click="closeAboutBookmarkPanel" />
@@ -47,10 +47,10 @@
     </section>
 
     <section class="cards-section"
-             :class="{'flex flex-center': !bookmarks.length || !feed.length,
-              'has-cards': bookmarks.length || feed.length}">
+             :class="{'flex flex-center': !feed.length,
+              'has-cards': feed.length}">
       <article
-          v-if="loadingBookmarks && !bookmarks.length && searchQuery"
+          v-if="!loadingBookmarks && !feed.length && searchQuery"
           class="empty-search-result"
       >
         <h3>No bookmark found with the name "{{ searchQuery }}"</h3>
@@ -59,7 +59,7 @@
 
       <article
           class="empty-bookmarks-section"
-          v-else-if="!bookmarks.length && !feed.length && !searchQuery"
+          v-else-if="!feed.length && !searchQuery"
       >
         <h3 class="text-center empty-state-title">
           {{ favorite ? "You don't have any bookmarks in your favorites." : "You don't have any bookmarks yet" }}
@@ -82,25 +82,7 @@
 <!--        </li>-->
 <!--      </ul>-->
 
-      <ul class="card-container"
-          :class="{ 'few-items': bookmarks.length <= 2 }"
-          v-show="active_view === 'bookmarks' && bookmarks.length">
-        <BookmarkCard
-            v-for="(bookmark, index) in bookmarks"
-            :key="bookmark.id || index"
-            :theme="currentTheme"
-            :data="bookmark"
-            :isOpen="openMenuId === bookmark.id"
-            @toggle-menu="toggleMenu"
-            @close-menu="closeAllMenus"
-            @delete="handleDeleteBookmark(bookmark.id)"
-            @increment="handleIncrementCounting(bookmark.id)"
-            @favorite="handleFavorite"
-            @edit="handleBookmarkEdit"
-        />
-      </ul>
-
-      <Feed_List v-show="active_view === 'feed' && feed.length" />
+      <Feed_List v-show="feed.length" />
     </section>
 
     <footer class="main-footer fixed bottom0 w100 flex flex-between">
@@ -142,16 +124,14 @@
   import View_Tabs from "../components/View_Tabs.vue";
 
   const { state, getters, dispatch, commit } = useStore();
-  // dispatch('get_feed');
-  const bookmarks = computed(() => getters.bookmarks);
-  bookmarks.value.length === 0 && dispatch('get_marks');
+  const feed = computed(() => getters.feed);
+  feed.value.length === 0 && dispatch('get_feed');
   const { width } = useBreakpoints();
 
   const openMenuId = ref(null);
   const isScrolled = ref(false);
   const scrollProgress = ref(0);
 
-  const feed = computed(() => getters.feed);
   const showSettings = computed(() => state.showSettings);
   const active_view = computed(() => state.active_view);
   const search = computed(() => state.search);
@@ -253,7 +233,7 @@
 </script>
 
 <style lang="scss">
-  .home {
+  .feed-view {
     @media only screen and (min-width: 0) {
       width: 100%;
 
