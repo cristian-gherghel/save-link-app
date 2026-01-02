@@ -27,7 +27,7 @@ const routes = [
     meta: { auth: true },
     component: HomeView,
     beforeEnter: async (to, from, next) => {
-      store.state.bookmarks.length === 0 && await store.dispatch('get_feed');
+      store.state.bookmarks.length === 0 && await store.dispatch('get_marks');
       next();
     }
   },
