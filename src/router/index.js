@@ -25,16 +25,20 @@ const routes = [
     path: '/private-bookmarks',
     name: 'Private_Bookmarks',
     meta: { auth: true },
-    component: HomeView
+    component: HomeView,
+    beforeEnter: async (to, from, next) => {
+      await store.dispatch('get_feed');
+      next();
+    }
   },
   {
     path: '/public-feed',
     name: 'Public_Feed',
     component: FeedView,
-    // beforeEnter: async (to, from, next) => {
-    //   await store.dispatch('get_feed');
-    //   next();
-    // }
+    beforeEnter: async (to, from, next) => {
+      await store.dispatch('get_feed');
+      next();
+    }
   },
   {
     path: '/about',
