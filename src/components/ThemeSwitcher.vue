@@ -65,7 +65,9 @@
           <span>{{ showOnlyFavorites ? 'Show all bookmarks' : 'Show favorites only' }}</span>
         </div>
 
-        <div class="logout-action" @click="handleLogout">
+        <div class="logout-action"
+             v-show="user.name"
+             @click="handleLogout">
           <i v-html="icons.logoutIcon"></i>
           <span>Logout</span>
         </div>
@@ -79,7 +81,7 @@
   import { useStore } from 'vuex';
   import { icons, useBreakpoints } from '../utils.js';
 
-  const { getters, dispatch, commit } = useStore();
+  const { state, getters, dispatch, commit } = useStore();
   const { type } = useBreakpoints();
 
   const showSettings = computed(() => getters.showSettings);
@@ -87,6 +89,7 @@
   const currentTheme = computed(() => getters.currentTheme);
   const themes = computed(() => getters.availableThemes);
   const showOnlyFavorites = computed(() => getters.showOnlyFavorites);
+  const user = computed(() => state.user);
 
 
   function handleAboutBookmark () {

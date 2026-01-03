@@ -73,33 +73,14 @@
         </template>
       </article>
 
-<!--      <ul v-if="loadingBookmarks"-->
-<!--          class="card__image">-->
-<!--        <li v-for="n in 3"-->
-<!--            :key="n"-->
-<!--            class="skeleton-item">-->
-<!--          <Skeletor />-->
-<!--        </li>-->
-<!--      </ul>-->
-
       <Feed_List v-show="feed.length" />
     </section>
 
     <footer class="main-footer fixed bottom0 w100 flex flex-between">
       <View_Tabs />
-
-      <i class="add-bookmark-btn flex-center m-left-auto"
-         v-if="active_view !== 'feed'"
-         @click="Handle_Show_New_Bookmark_Form"
-         v-html="icons.plus" />
     </footer>
 
     <ThemeSwitcher />
-
-    <AddBookmarkForm
-        @submit="handeSubmitForm"
-        @close="handleCancelForm"
-        cy="bookmark-form" />
 
     <img
         v-if="currentTheme !== 'light'"
